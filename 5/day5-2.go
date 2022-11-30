@@ -10,13 +10,16 @@ func getPolymerLength(polymer []byte) int {
 	processing := true
 	for processing {
 		var isModified bool
+		var newPolymer []byte
 		for i := 0; i < len(polymer)-1; i++ {
 			if isCharPair(polymer[i], polymer[i+1]) {
-				polymer = append(polymer[0:i], polymer[i+2:]...)
+				i++
 				isModified = true
-				break
+			} else {
+				newPolymer = append(newPolymer, polymer[i])
 			}
 		}
+		polymer = append(newPolymer, polymer[len(polymer)-1])
 		processing = isModified
 	}
 	return len(polymer)
