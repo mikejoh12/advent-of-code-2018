@@ -27,7 +27,7 @@ func getManhattanDist(pos1, pos2 [2]int) int {
 func getMaxFiniteArea(grid [][]int, distCounts map[int]int) (area int) {
 	for x := 0; x < len(grid[0]); x++ {
 		delete(distCounts, grid[0][x])
-		delete(distCounts,  grid[len(grid)-1][x])
+		delete(distCounts, grid[len(grid)-1][x])
 	}
 	for y := 0; y < len(grid); y++ {
 		delete(distCounts, grid[y][0])
@@ -64,12 +64,12 @@ func main() {
 	}
 
 	for y, row := range grid {
-		for x := range row {			
+		for x := range row {
 			var minDist, minCoordIdx, coordIdx int = len(grid) + len(grid[0]), -1, -1
 			var isTie bool
 
 			for idx, coord := range coords {
-				mhDist := getManhattanDist(coord, [2]int{x,y})
+				mhDist := getManhattanDist(coord, [2]int{x, y})
 				if mhDist < minDist {
 					isTie, coordIdx = false, idx
 					minDist = mhDist
