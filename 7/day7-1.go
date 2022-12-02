@@ -7,7 +7,7 @@ import (
 	"sort"
 )
 
-func areAllStepsCompleted(finished map[rune]bool, steps []rune) bool {
+func arePriorStepsCompleted(finished map[rune]bool, steps []rune) bool {
 	for _, r := range steps {
 		if _, ok := finished[r]; !ok {
 			return false
@@ -17,22 +17,21 @@ func areAllStepsCompleted(finished map[rune]bool, steps []rune) bool {
 }
 
 func main() {
-    file, _ := os.Open("input.txt")
-    scanner := bufio.NewScanner(file)
-
+	file, _ := os.Open("input.txt")
+	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanLines)
-  
+
 	stepOrder := make(map[rune][]rune)
 	steps := make(map[rune]bool)
 	finished := make(map[rune]bool)
 
-    for scanner.Scan() {
+	for scanner.Scan() {
 		s := scanner.Text()
 		var before, after string
 		fmt.Sscanf(s, "Step %s must be finished before step %s can begin.", &before, &after)
 		stepOrder[rune(after[0])] = append(stepOrder[rune(after[0])], rune(before[0]))
 		steps[rune(before[0])], steps[rune(after[0])] = true, true
-    }
+	}
 
 	var stepsSlice []rune
 	for r := range steps {
@@ -46,9 +45,9 @@ func main() {
 	for len(orderStr) < len(stepsSlice) {
 		for _, r := range stepsSlice {
 			if _, ok := finished[r]; !ok {
-				needComplete, ok := stepOrder[r]
-				canDoStep := areAllStepsCompleted(finished, needComplete)
-				if !ok || canDoStep {
+				needComplete, _ := stepOrder[r]
+				canDoStep := arePriorStepsCompleted(finished, needComplete)
+				if canDoStep {
 					orderStr += string(r)
 					finished[r] = true
 					break
